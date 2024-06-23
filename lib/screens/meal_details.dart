@@ -14,21 +14,24 @@ class MealDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final favoriteMeal = ref.watch(favoriteMealsprovider);
+    bool isFavorite = favoriteMeal.contains(meal);
     return Scaffold(
         appBar: AppBar(title: Text(meal.title), actions: [
           IconButton(
             onPressed: () {
-             final wasAdded= ref
+              final wasAdded = ref
                   .read(favoriteMealsprovider.notifier)
                   .toggleMealFavoriteStatus(meal);
-                  ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(wasAdded?'Meal added as favorite': 'Meal removed'),
-      ),
-    );
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      wasAdded ? 'Meal added as favorite' : 'Meal removed'),
+                ),
+              );
             },
-            icon: const Icon(Icons.star),
+            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
           )
         ]),
         body: SingleChildScrollView(
@@ -53,7 +56,7 @@ class MealDetailsScreen extends ConsumerWidget {
                 Text(
                   ingredient,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
               const SizedBox(height: 24),
@@ -75,7 +78,7 @@ class MealDetailsScreen extends ConsumerWidget {
                     step,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                   ),
                 ),
